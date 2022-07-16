@@ -1,5 +1,7 @@
-import click
 import sqlite3
+import typer
+
+cli = typer.Typer()
 
 
 class DbCur:
@@ -47,28 +49,31 @@ class Todo:
         self.done = True
 
 
-@click.group()
-def cli():
-    pass
-
-
 @cli.command()
-@click.option('-t', '--text', prompt='Text', type=str, required=True)
-def add(text):
+def add():
+    '''
+    Add TODO
+    '''
+    text = typer.prompt('Text')
     todo = Todo(text)
     with db as cur:
         cur.add(todo)
 
 
 @cli.command()
-@click.argument('index', type=int)
-def remove(index):
+def remove(index: int):
+    '''
+    Remove TODO by index
+    '''
     with db as cur:
         cur.remove(index)
 
 
 @cli.command()
 def list():
+    '''
+    List of TODOs
+    '''
     with db as cur:
         for i, todo, done in cur.select():
-            click.echo(f'{i}, {todo}, {done}')
+            print(f'{i}, {todo}, {done}')
