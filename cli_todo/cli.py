@@ -1,7 +1,7 @@
 import sqlite3
-import typer
+from typer import Typer, Option
 
-cli = typer.Typer()
+cli = Typer()
 
 
 class DbCur:
@@ -50,11 +50,10 @@ class Todo:
 
 
 @cli.command()
-def add():
+def add(text: str = Option(..., prompt=True)):
     '''
     Add TODO
     '''
-    text = typer.prompt('Text')
     todo = Todo(text)
     with db as cur:
         cur.add(todo)
