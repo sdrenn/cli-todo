@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "cli-todo"
+version = "0.1.0"
+description = "Command line TODO list"
+authors = ["Михаил Артемьев <m.artemiev@fund-f.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = "^8.1.3"
+typer = "^0.6.1"
+rich = "^12.5.1"
+shellingham = "^1.4.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mypy = "^0.961"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+todo = "cli_todo.cli:cli"
