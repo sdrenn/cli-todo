@@ -16,12 +16,12 @@ class DbCur:
         return self.cur.fetchall()
 
     def remove(self, i):
-        self.cur.execute(f"delete from todo where id={i}")
+        self.cur.execute(f'delete from todo where id={i}')
 
 
 class Db:
     def __init__(self):
-        self.con = sqlite3.connect('todo.db')
+        self.con = self.get_db()
         self.cur = self.con.cursor()
         self.cur.execute("SELECT name FROM sqlite_schema WHERE type='table'")
         tables = list(self.cur.fetchall())
@@ -36,8 +36,8 @@ class Db:
         self.con.commit()
         self.con.close()
 
-
-db = Db()
+    def get_db(self):
+        return sqlite3.connect('todo.db')
 
 
 class Todo:
@@ -55,24 +55,25 @@ def add(text: str = Option(..., prompt=True)):
     Add TODO
     '''
     todo = Todo(text)
-    with db as cur:
+    with Db() as cur:
         cur.add(todo)
 
 
 @cli.command()
-def remove(index: int):
+def remove(indexes: list[int]):
     '''
     Remove TODO by index
     '''
-    with db as cur:
-        cur.remove(index)
+    with Db() as cur:
+        for index in indexes:
+            cur.remove(index)
 
 
-@cli.command()
-def list():
+@cli.command('list')
+def get_list():
     '''
     List of TODOs
     '''
-    with db as cur:
+    with Db() as cur:
         for i, todo, done in cur.select():
             print(f'{i}, {todo}, {done}')
