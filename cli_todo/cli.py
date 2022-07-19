@@ -15,8 +15,8 @@ class DbCur:
         self.cur.execute("select * from todo")
         return self.cur.fetchall()
 
-    def remove(self, i):
-        self.cur.execute(f'delete from todo where id={i}')
+    def remove(self, ids):
+        self.cur.execute('delete from todo where id in (?)', ids)
 
 
 class Db:
@@ -26,7 +26,6 @@ class Db:
         self.cur.execute("SELECT name FROM sqlite_schema WHERE type='table'")
         tables = list(self.cur.fetchall())
         if ('todo',) not in tables:
-            print(tables)
             self.cur.execute('create table todo (id integer primary key, text text, done bool)')
 
     def __enter__(self):
@@ -65,8 +64,7 @@ def remove(indexes: list[int]):
     Remove TODO by index
     '''
     with Db() as cur:
-        for index in indexes:
-            cur.remove(index)
+        cur.remove(indexes)
 
 
 @cli.command('list')
