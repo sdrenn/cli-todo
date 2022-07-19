@@ -29,3 +29,47 @@ def test_cli(monkeypatch):
     result = runner.invoke(cli, ['list'])
     assert 'test todo' not in result.stdout
     os.remove('/tmp/test.db')
+
+
+def test_add():
+    pass
+
+
+def test_remove():
+    pass
+
+
+def test_remove_many():
+    pass
+
+
+def test_restore():
+    pass
+
+
+def test_done():
+    pass
+
+
+def test_undone():
+    pass
+
+
+def test_timer_start():
+    pass
+
+
+def test_timer_stop():
+    pass
+
+
+def test_chose_random():
+    pass
+
+
+def test_skip():
+    pass
+
+
+def test_skip_max():
+    pass
